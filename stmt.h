@@ -25,7 +25,6 @@ class StmtVisitor {
     public:
     virtual ~StmtVisitor() = default;
 
-    // TODO Make const. We never modify them.
     virtual void visit_expression_stmt(const Expression *stmt) = 0;
     virtual void visit_var_stmt(const Var *stmt) = 0;
     virtual void visit_block_stmt(const Block *stmt) = 0;
