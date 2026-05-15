@@ -11,7 +11,7 @@ functional, hopefully bug free state I decided to upload it.
 Other than my implementation being in a different language I've made some other changes to Lox too.
 Some of the changes I've made but not all include:
 
-1. Completed numerous of the challenged from the book
+1. Completed numerous challenges from the book
 2. Made ```print``` a builtin function rather than a statement
 3. Added ```break``` and ```continue``` statements for ```for ``` and ```while``` loops.
 4. Disallowed unassigned variables from being used, i.e. can't have a variable expression if you have only declared the variable but not assigned it.
