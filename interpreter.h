@@ -86,6 +86,7 @@ class Interpreter: public ExprVisitor, public StmtVisitor {
     void visit_continue_stmt(const Continue *stmt) override;
     void visit_function_stmt(const Function *stmt) override;
     void visit_return_stmt(const Return *stmt) override;
+    void visit_class_stmt(const Class *stmt) override;
 
     void interpret(const std::vector<std::shared_ptr<Stmt>>& statements);
     void execute_block(const Block *stmt, const std::shared_ptr<Environment>& env);

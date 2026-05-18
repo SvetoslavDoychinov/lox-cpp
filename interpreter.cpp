@@ -8,6 +8,7 @@
 
 #include "builtins.h"
 #include "lox.h"
+#include "lox_class.h"
 #include "lox_function.h"
 
 Interpreter::Interpreter() {
@@ -239,6 +240,12 @@ void Interpreter::visit_function_stmt(const Function *stmt) {
 
     auto function = std::make_shared<LoxFunction>(stmt, this->environment);
     this->environment->define(stmt->name.get_lexeme(), function);
+}
+
+void Interpreter::visit_class_stmt(const Class *stmt) {
+    this->environment->define(stmt->name.get_lexeme(), nullptr);
+    auto klass = std::make_shared<LoxClass>(stmt->name.get_lexeme());
+    this->environment->assign(stmt->name, klass);
 }
 
 void Interpreter::visit_expression_stmt(const Expression *stmt) {

@@ -19,7 +19,7 @@ class LoxFunction: public LoxCallable {
     std::shared_ptr<Environment> closure;
 
     public:
-    explicit LoxFunction(const Function* declaration, std::shared_ptr<Environment> closure) : declaration(declaration), closure(std::move(closure)) {};
+    LoxFunction(const Function* declaration, std::shared_ptr<Environment> closure) : declaration(declaration), closure(std::move(closure)) {};
 
     object call(Interpreter *interpreter, std::vector<object> arguments) override;
     int arity() override;

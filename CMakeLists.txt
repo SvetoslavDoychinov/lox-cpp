@@ -21,4 +21,5 @@ add_executable(lox-cpp
         builtins.cpp
         lox_function.cpp
         resolver.cpp
+        lox_class.cpp
 )

@@ -52,6 +52,7 @@ class Parser {
     Token consume(TokenType type, const std::string &message);
 
     std::shared_ptr<Function> function(const std::string &kind);
+    std::shared_ptr<Class> class_declaration();
 
 
     static ParseError error(const Token &type, const std::string &message);

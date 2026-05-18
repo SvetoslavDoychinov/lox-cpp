@@ -38,6 +38,7 @@ class Resolver: public ExprVisitor, public StmtVisitor {
     void visit_block_stmt(const Block *stmt) override;
     void visit_var_stmt(const Var *stmt) override;
     void visit_function_stmt(const Function *stmt) override;
+    void visit_class_stmt(const Class *stmt) override;
     void visit_expression_stmt(const Expression *stmt) override;
     void visit_if_stmt(const If *stmt) override;
     void visit_return_stmt(const Return *stmt) override;

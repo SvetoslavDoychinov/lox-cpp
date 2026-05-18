@@ -19,6 +19,7 @@ class Break;
 class Continue;
 class Function;
 class Return;
+class Class;
 
 
 class StmtVisitor {
@@ -35,6 +36,7 @@ class StmtVisitor {
     virtual void visit_for_stmt(const For *stmt) = 0;
     virtual void visit_function_stmt(const Function *stmt) = 0;
     virtual void visit_return_stmt(const Return *stmt) = 0;
+    virtual void visit_class_stmt(const Class *stmt) = 0;
 };
 
 
@@ -165,6 +167,17 @@ class Return: public Stmt {
 
     void accept(StmtVisitor *visitor) override {
         visitor->visit_return_stmt(this);
+    }
+};
+
+
+class Class: public Stmt {
+    public:
+    Token name; std::vector<std::shared_ptr<Function>> methods;
+    Class(Token name, std::vector<std::shared_ptr<Function>> methods) : name(std::move(name)), methods(std::move(methods)) {}
+
+    void accept(StmtVisitor *visitor) override {
+        visitor->visit_class_stmt(this);
     }
 };
 

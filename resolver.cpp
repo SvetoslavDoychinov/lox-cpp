@@ -28,6 +28,11 @@ void Resolver::visit_function_stmt(const Function *stmt) {
     this->resolve_function(stmt, FUNCTION);
 }
 
+void Resolver::visit_class_stmt(const Class *stmt) {
+    this->declare(stmt->name);
+    this->define(stmt->name);
+}
+
 void Resolver::visit_expression_stmt(const Expression *stmt) {
     this->resolve(stmt->expression);
 }

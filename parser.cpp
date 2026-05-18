@@ -29,7 +29,19 @@ std::vector<std::shared_ptr<Stmt>> Parser::parse() {
 std::shared_ptr<Stmt> Parser::declaration() {
     if (this->match({VAR})) {return this->var_declaration();}
     if (this->match({FUN})) {return this->function("function");}
+    if (this->match({CLASS})) {return this->class_declaration();}
     return this->statement();
+}
+
+std::shared_ptr<Stmt> Parser::statement() {
+    if (this->match({LEFT_BRACE})) {return std::make_shared<Block>(this->block());}
+    if (this->match({IF})) {return this->if_statement();}
+    if (this->match({WHILE})) {return this->while_statement();}
+    if (this->match({FOR})) {return this->for_statement();}
+    if (this->match({BREAK})) {return this->break_statement();}
+    if (this->match({CONTINUE})) {return this->continue_statement();}
+    if (this->match({RETURN})) {return this->return_statement();}
+    return this->expression_statement();
 }
 
 std::shared_ptr<Stmt> Parser::var_declaration() {
@@ -37,7 +49,7 @@ std::shared_ptr<Stmt> Parser::var_declaration() {
 
     std::shared_ptr<Expr> initializer;
     if (this->match({EQUAL})) {
-       initializer = this->expression();
+        initializer = this->expression();
     }
 
     this->consume(SEMICOLON, "Expect ';' after variable declaration.");
@@ -65,15 +77,18 @@ std::shared_ptr<Function> Parser::function(const std::string &kind) {
     return std::make_shared<Function>(name, parameters, body);
 }
 
-std::shared_ptr<Stmt> Parser::statement() {
-    if (this->match({LEFT_BRACE})) {return std::make_shared<Block>(this->block());}
-    if (this->match({IF})) {return this->if_statement();}
-    if (this->match({WHILE})) {return this->while_statement();}
-    if (this->match({FOR})) {return this->for_statement();}
-    if (this->match({BREAK})) {return this->break_statement();}
-    if (this->match({CONTINUE})) {return this->continue_statement();}
-    if (this->match({RETURN})) {return this->return_statement();}
-    return this->expression_statement();
+std::shared_ptr<Class> Parser::class_declaration() {
+    auto name =  this->consume(IDENTIFIER, "Expect class name.");
+    this->consume(LEFT_BRACE, "Expect '{' before class body.");
+
+    std::vector<std::shared_ptr<Function>> methods;
+    // Lox class is just a bundle of methods on declaration
+    while (!this->check(RIGHT_BRACE) && !this->is_at_end()) {
+        methods.push_back(this->function("method"));
+    }
+    this->consume(RIGHT_BRACE, "Expect '}' after class body.");
+
+    return std::make_shared<Class>(name, methods);
 }
 
 std::shared_ptr<Stmt> Parser::for_statement() {
@@ -322,7 +337,7 @@ std::shared_ptr<Expr> Parser::primary() {
         this->consume(RIGHT_PAREN, "Expect ')' after expression.");
         return std::make_shared<Grouping>(expr);
     }
-    // Will reach here at token types we haven't made parser logic for (identifier, for, while, etc.)
+    // Will reach here at token types we haven't made parser logic for
     throw Parser::error(this->peek(), "Expect expression.");
 }
 
